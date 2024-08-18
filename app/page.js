@@ -3,9 +3,9 @@
 import Image from 'next/image'
 import getStripe from '@/utils/get-stripe'
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, Container, Grid, Link, Toolbar, Typography } from '@mui/material'
 import Head from 'next/head'
-
+import Header from './components/Header' // Import the Header component
 
 export default function Home() {
   const handleSubmit = async () => {
@@ -41,18 +41,7 @@ export default function Home() {
         <meta name="description" content="Create flashcard from your text" />
       </Head>
 
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" style={{flexGrow: 1}}>Flashcard Saas</Typography>
-          <SignedOut>
-            <Button color = "inherit" href="/sign-in"> Login </Button>
-            <Button color = "inherit" href="/sign-up"> Sign Up </Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton/>
-          </SignedIn>
-        </Toolbar>
-      </AppBar>
+      <Header /> {/* Include the Header component */}
 
       <Box
         sx = {{
@@ -66,7 +55,9 @@ export default function Home() {
           The easiest way to make flashcards from your text
         </Typography>
         <Button variant="contained" color="primary" sx={{mt: 2}}>
-          Get Started
+          <Link href="/generate" passHref style={{ color: 'white', textDecoration: 'none' }}>
+            Get Started
+          </Link>
         </Button>
       </Box>
 
@@ -157,6 +148,20 @@ export default function Home() {
             </Typography>
           </Grid>
         </Grid>
+      </Box>
+      <Box sx={{ textAlign: 'center', my: 4 }}>
+        <SignedIn>
+          <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+            <Link href="/flashcards" passHref style={{ color: 'white', textDecoration: 'none' }}>
+              View Flashcards
+            </Link>
+          </Button>
+        </SignedIn>
+        <SignedOut>
+          <Typography variant="h6" color="error" sx={{ mt: 2 }}>
+            Please log in to view your flashcards.
+          </Typography>
+        </SignedOut>
       </Box>
     </Container>
   )

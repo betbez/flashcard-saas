@@ -33,7 +33,8 @@ Return in the following JSON format:
 
 export async function POST(req) {
     try {
-        const data = await req.text();
+        const { text } = await req.json();
+        console.log('Received text:', text);
 
         // Generate content using Google Gemini AI
         const model = genAI.getGenerativeModel({
@@ -46,11 +47,19 @@ export async function POST(req) {
 
         const result = await model.generateContent(`
             System Prompt: ${systemPrompt}
-            User: ${data}
+            User: ${text}
         `);
 
         const response = await result.response;
-        const flashcards = JSON.parse(response);
+        console.log('Gemini API response:', response);
+
+        // Extract the content from the response
+        const content = response.candidates[0].content;
+        console.log('Extracted content:', content);
+
+        // Parse the JSON string from the content
+        const flashcards = JSON.parse(content.parts[0].text.replace('```json\n', '').replace('\n```', ''));
+        console.log('Parsed flashcards:', flashcards);
 
         return NextResponse.json(flashcards.flashcards);
     } catch (error) {

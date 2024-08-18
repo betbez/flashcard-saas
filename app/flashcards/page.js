@@ -1,7 +1,8 @@
 'use client'
 
-import {useUser} from '@clerk/next.js'
+import {useUser} from '@clerk/nextjs'
 import {use, useEffect, useState} from 'react'
+import Header from '../components/Header'
 
 import {collection, doc, getDoc, setDoc} from 'firebase/firestore'
 import {db} from '@/firebase'
@@ -38,9 +39,14 @@ export default function Flashcards() {
     }
 
     return <Container maxWidth="100vw">
+        <Header />
+        <Typography variant="h4" sx={{ mt: 4, mb: 2, textAlign: 'center' }}>
+            Flashcard Collections
+        </Typography>
         <Grid container spacing = {3} sx = {{
             mt: 4,
         }}>
+            
             {flashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
                     <Card>

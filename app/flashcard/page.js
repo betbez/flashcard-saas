@@ -1,9 +1,9 @@
 'use client'
 
-import {useUser} from '@clerk/next.js'
+import {useUser} from '@clerk/nextjs'
 import {useEffect, useState} from 'react'
 
-import {collection, doc, getDoc, setDoc} from 'firebase/firestore'
+import {collection, doc, getDoc, getDocs, setDoc} from 'firebase/firestore'
 import {db} from '@/firebase'
 import {useRouter} from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
@@ -21,7 +21,7 @@ export default function Flashcard() {
         async function getFlashcard() {
             if (!search ||   !user) return
             const colRef = collection(doc(collection(db, 'users'), user.id), search)
-            const docs = await getDocs(docRef)
+            const docs = await getDocs(colRef)
             const flashcards = []
 
             docs.forEach((doc) => {
@@ -63,7 +63,7 @@ export default function Flashcard() {
                                                     transformStyle: 'preserve-3d',
                                                     position: 'relative',
                                                     width: '100%',
-                                                    height: '200px',
+                                                    minHeight: '200px', // Set a minimum height
                                                     boxShadow: '0 4px 8px 0 rgba(0,0,0, 0.2)',
                                                     transform: flipped[index]
                                                         ? 'rotateY(180deg)'
@@ -74,14 +74,20 @@ export default function Flashcard() {
                                                     width: '100%',
                                                     height: '100%',
                                                     backfaceVisibility: 'hidden',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
                                                     padding: 2,
-                                                    boxSizing: 'border-box', 
+                                                    boxSizing: 'border-box',
+                                                    overflow: 'auto', // Ensure content does not overflow
                                                },
-                                               '& > div > div: nth-of-type(2)': {
+                                               '& > div > div:nth-of-type(1)': {
+                                                    display: 'flex',
+                                                    justifyContent: 'center', // Center content horizontally
+                                                    alignItems: 'center', // Center content vertically
+                                               },
+                                               '& > div > div:nth-of-type(2)': {
                                                     transform: 'rotateY(180deg)',  
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-start', // Align content to the top
+                                                    alignItems: 'flex-start', // Align content to the top
                                                },
                                             }}    
                                         >
@@ -89,6 +95,11 @@ export default function Flashcard() {
                                                 <div>
                                                     <Typography variant="h5" component="div">
                                                         {flashcard.front}
+                                                    </Typography>
+                                                </div>
+                                                <div>
+                                                    <Typography variant="h5" component="div">
+                                                        {flashcard.back}
                                                     </Typography>
                                                 </div>
                                             </div>

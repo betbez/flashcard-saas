@@ -6,11 +6,12 @@ import { Box, Button, Card, CardActionArea, CardContent, Container, Dialog, Dial
 import { writeBatch, doc, collection, getDoc } from 'firebase/firestore'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import Header from '../components/Header' // Use relative import path
 
 export default function Generate() {
     const {isLoaded, isSignedIn, user} = useUser()
     const [flashcards, setFlashcards] = useState([])
-    const [flipped, setFlipped] = useState([])
+    const [flipped, setFlipped] = useState({})
     const [text, setText] = useState('')
     const [name, setName] = useState('')
     const [open, setOpen] = useState(false)
@@ -31,16 +32,16 @@ export default function Generate() {
             }
     
             const data = await response.json()
+            console.log('Generated flashcards:', data) // Add this line to verify the data
     
-            setFlashcards(data.flashcards)
+            setFlashcards(data)
         } catch (error) {
             console.error('Error generating flashcards:', error)
             alert('There was an error generating flashcards. Please try again.')
         }
     }
-    
 
-    const handleCardClick =  (id) => {
+    const handleCardClick = (id) => {
         setFlipped((prev) => ({
             ...prev,
             [id]: !prev[id],
@@ -48,6 +49,10 @@ export default function Generate() {
     }
 
     const handleOpen = () => {
+        if (!isSignedIn) {
+            alert('You must be logged in to save the collection.')
+            return
+        }
         setOpen(true)
     }
 
@@ -74,7 +79,7 @@ export default function Generate() {
                 return 
             } else {
                 collections.push({name})
-                batch.set(userDocRef, {flashcards: collection}, {merge: true} )
+                batch.set(userDocRef, {flashcards: collections}, {merge: true} )
             }
             
         } else {
@@ -95,6 +100,7 @@ export default function Generate() {
 
     // Components
     return <Container maxWidth="md">
+        <Header /> {/* Include the Header component */}
         <Box 
             sx={{
                 mt: 4,
@@ -152,7 +158,7 @@ export default function Generate() {
                                                     transformStyle: 'preserve-3d',
                                                     position: 'relative',
                                                     width: '100%',
-                                                    height: '200px',
+                                                    minHeight: '200px', // Set a minimum height
                                                     boxShadow: '0 4px 8px 0 rgba(0,0,0, 0.2)',
                                                     transform: flipped[index]
                                                         ? 'rotateY(180deg)'
@@ -163,14 +169,20 @@ export default function Generate() {
                                                     width: '100%',
                                                     height: '100%',
                                                     backfaceVisibility: 'hidden',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
                                                     padding: 2,
-                                                    boxSizing: 'border-box', 
+                                                    boxSizing: 'border-box',
+                                                    overflow: 'auto', // Ensure content does not overflow
                                                },
-                                               '& > div > div: nth-of-type(2)': {
+                                               '& > div > div:nth-of-type(1)': {
+                                                    display: 'flex',
+                                                    justifyContent: 'center', // Center content horizontally
+                                                    alignItems: 'center', // Center content vertically
+                                               },
+                                               '& > div > div:nth-of-type(2)': {
                                                     transform: 'rotateY(180deg)',  
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-start', // Align content to the top
+                                                    alignItems: 'flex-start', // Align content to the top
                                                },
                                             }}    
                                         >
@@ -178,6 +190,11 @@ export default function Generate() {
                                                 <div>
                                                     <Typography variant="h5" component="div">
                                                         {flashcard.front}
+                                                    </Typography>
+                                                </div>
+                                                <div>
+                                                    <Typography variant="h5" component="div">
+                                                        {flashcard.back}
                                                     </Typography>
                                                 </div>
                                             </div>

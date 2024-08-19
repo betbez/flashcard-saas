@@ -1,6 +1,7 @@
 import { SignIn, SignUp } from '@clerk/nextjs'
 import {AppBar, Button, Box, Container, Link, Toolbar, Typography} from '@mui/material'
 
+
 export default function SignUpPage() {
     return (
         <Container maxWidth = "100vw">
@@ -14,12 +15,18 @@ export default function SignUpPage() {
                     >
                         Flashcard Saas
                     </Typography>
-                    <Button color="inherit"> 
+                    <Button 
+                        sx={{
+                            backgroundColor: '#008B8B'
+                        }}>
                         <Link href="/sign-in" passHref>
                             Login
                         </Link>              
                     </Button>
-                    <Button color="inherit"> 
+                    <Button 
+                        sx={{
+                            backgroundColor: '#008B8B'
+                        }}>
                         <Link href="/sign-up" passHref>
                             Sign Up
                         </Link>              
@@ -33,7 +40,18 @@ export default function SignUpPage() {
                 alignItems="center"
                 justifyContent="center"
             >
-                <Typography variant="h4">Sign Up</Typography>
+                <Typography variant="h4"
+                    gutterBottom 
+                    sx={{ 
+                        fontWeight: 'bold', 
+                        color: '#333', 
+                        textTransform: 'uppercase', 
+                        letterSpacing: '1.5px',
+                        mt: 4,
+                        mb: 4,
+                        textAlign: 'center'
+                    }}
+                >Sign Up</Typography>
                 <SignUp />
             </Box>
         </Container>

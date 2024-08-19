@@ -8,7 +8,7 @@ import {db} from '@/firebase'
 import {useRouter} from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import { Box, Card, CardActionArea, CardContent, Container, Grid, Typography } from '@mui/material'
-import Header from './components/Header'
+import Header from '../components/Header'
 
 export default function Flashcard() {
     const {isLoaded, isSignedIn, user} = useUser()

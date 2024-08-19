@@ -100,17 +100,27 @@ export default function Generate() {
 
     // Components
     return <Container maxWidth="md">
+    
         <Header /> {/* Include the Header component */}
         <Box 
             sx={{
-                mt: 4,
+                mt: 12,
                 mb: 6,
                 display: "flex",
                 flexDirection: 'column',
                 alignItem: 'center'
             }}>
-            <Typography variant = "h4">
-                Generate flashcards
+            <Typography variant = "h4" 
+                gutterBottom 
+                sx={{ 
+                    fontWeight: 'bold', 
+                    color: '#333', 
+                    textTransform: 'uppercase', 
+                    letterSpacing: '1.5px',
+                    mb: 4,
+                    textAlign: 'center'
+                }}
+            >    Generate Flashcards
             </Typography>
             <Paper sx={{ p: 4, width: '100%' }}>
                 <TextField
@@ -127,7 +137,9 @@ export default function Generate() {
                 />
                 <Button
                     variant="contained"
-                    color="primary"
+                    sx={{
+                        backgroundColor: '#008B8B'
+                    }}
                     onClick={handleSubmit}
                     fullWidth
                 >

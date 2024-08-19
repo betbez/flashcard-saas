@@ -66,32 +66,34 @@ const ResultPage = () => {
         )
     }
 
-    return (<Container 
-        maxWidth = "100vw" 
-        sx={{
-            textAlign: 'center',
-            mt: 4,
-        }}
-    >
-        {session.payment_status === 'paid' ? (
-            <>
-                <Typography variant="h4">Thank you for purchasing</Typography>
-                <Box sx= {{mt: 22}}>
-                    <Typography variant="h6"> Session ID: {session_id}</Typography>
-                    <Typography variant='body1'>
-                        We have received your payment. You will receive an email with the order shortly.
-                    </Typography>
-                </Box>
-            </>
-        ) : (
-            <>
-                <Typography variant="h4">Payment Failed</Typography>
-                <Box sx= {{mt: 22}}>
-                    <Typography variant='body1'>
-                        Your payment was not successful. Please try again.
-                    </Typography>
-                </Box>
-            </>
-        )}
-    </Container>)
+    return (
+        <Container 
+            maxWidth = "100vw" 
+            sx={{
+                textAlign: 'center',
+                mt: 4,
+            }}
+        >
+            {session.payment_status === 'paid' ? (
+                <>
+                    <Typography variant="h4">Thank you for purchasing</Typography>
+                    <Box sx= {{mt: 22}}>
+                        <Typography variant="h6"> Session ID: {session_id}</Typography>
+                        <Typography variant='body1'>
+                            We have received your payment. You will receive an email with the order shortly.
+                        </Typography>
+                    </Box>
+                </>
+            ) : (
+                <>
+                    <Typography variant="h4">Payment Failed</Typography>
+                    <Box sx= {{mt: 22}}>
+                        <Typography variant='body1'>
+                            Your payment was not successful. Please try again.
+                        </Typography>
+                    </Box>
+                </>
+            )}
+        </Container>
+    )
 }
